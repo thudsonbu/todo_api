@@ -35,4 +35,22 @@ router.get('/:todoId', function(req, res){
 	})
 })
 
+// update
+router.put('/:todoId', function(req, res){
+	db.Todo.findOneAndUpdate({ _id: req.params.todoId}, req.body, {new: true})
+	.then(function(todo){
+		res.json(todo);
+	})
+	.catch(function(err){
+		res.send(err);
+	})
+})
+
+// delete
+router.delete('/:todoId', function(req, res){
+	
+})
+
+
+
 module.exports = router;
