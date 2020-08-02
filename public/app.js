@@ -10,8 +10,9 @@ $(document).ready(function(){
 function addTodos(todos){
 	// add Todos to the page
 	todos.forEach(function(todo){
-		
-	})
+		let newTodo = $("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todo.name + "</li>")
+		$('.list').append(newTodo);
+	});
 }
 
 
