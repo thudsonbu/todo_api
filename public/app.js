@@ -24,11 +24,13 @@ function addTodos(todos){
 
 function addTodo(todo){
 	let newTodo = $("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todo.name + "</li>")
+		.hide().fadeIn(1000);
 	newTodo.data('id', todo._id);
+	newTodo.data('completed', todo.completed);
 	if (todo.completed === true){
 		newTodo.addClass("completed");
 	}
-	$('.list').append(newTodo);
+	$('.todo-list').append(newTodo);
 }
 
 function createTodo(text){
@@ -49,14 +51,40 @@ function createTodo(text){
 
 // Check off to do items
 $("ul").on("click", "li", function(e) {
-    $(this).toggleClass("completed");
+	updateTodo($(this));
     e.stopPropagation();
 });
+
+function updateTodo(todo){
+	let todoId = todo.data('id');
+	let todoCompleted = todo.data('completed');
+	if(todoCompleted === false){
+		$.ajax({
+  			url: '/api/todos/' + todoId,
+			method: 'PUT',
+			data: "completed=true",
+		})
+		.then(todo.addClass('completed'))
+		.catch(function(e){
+			console.log(e);
+		})
+	} else {
+		$.ajax({
+  			url: '/api/todos/' + todoId,
+			method: 'PUT',
+			data: "completed=false",
+		})
+		.then(todo.removeClass('completed'))
+		.catch(function(e){
+			console.log(e);
+		})
+	}
+}
 
 // Click on trash to delete to do items
 $("ul").on("click", "span",function(e) {
     // fade out element then remove when fade is complete
-    $(this).parent().fadeOut(500, function () {
+    $(this).parent().fadeOut(1000, function () {
         // removes parent element (li)
         $(this).remove();
     });
@@ -69,35 +97,3 @@ $("ul").on("click", "span",function(e) {
 	})
     e.stopPropagation();
 });
-
-// // Creating new to do items
-// $("input[id='bigInput']").keypress(function(e) {
-//     if(e.which === 13){
-//         let todoText = $(this).val();
-//         // Clear input
-//         $(this).val("");
-//         $("ul[id='bigUl']").append("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todoText + "</li>");
-//     }
-// });
-
-// Fade in and out input
-$(".fa-plus").click(function(){
-    $("input[id='bigInput']").fadeToggle();
-});
-
-
-// $("li").click(function() {
-//     if($(this).css("color") === "rgb(128, 128, 128)"){
-//         $(this).css({
-//             color:"black",
-//             textDecoration: "none"
-//         });
-//     }
-//
-//     else {
-//         $(this).css({
-//             color:"gray",
-//             textDecoration: "line-trough"
-//         });
-//     }
-// });

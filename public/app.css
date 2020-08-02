@@ -6,7 +6,6 @@ body {
     color: #4b4b4b;
 }
 
-
 h1 {
     background-color: #ff38e6;
     color: white;
@@ -50,6 +49,10 @@ input:focus {
     border: 2px solid #ff38e6;
     outline: none;
     background-color: white;
+}
+
+.todo {
+	background: transparent;
 }
 
 .trashIcon {
