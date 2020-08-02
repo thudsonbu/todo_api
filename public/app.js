@@ -58,29 +58,20 @@ $("ul").on("click", "li", function(e) {
 function updateTodo(todo){
 	let todoId = todo.data('id');
 	let todoCompleted = todo.data('completed');
-	if(todoCompleted === false){
-		$.ajax({
-  			url: '/api/todos/' + todoId,
-			method: 'PUT',
-			data: "completed=true",
-		})
-		.then(todo.addClass('completed'))
-		.then(todo.data('completed', true))
-		.catch(function(e){
-			console.log(e);
-		})
-	} else {
-		$.ajax({
-  			url: '/api/todos/' + todoId,
-			method: 'PUT',
-			data: "completed=false",
-		})
-		.then(todo.removeClass('completed'))
-		.then(todo.data('completed', false))
-		.catch(function(e){
-			console.log(e);
-		})
-	}
+	let todoUrl = '/api/todos/' + todoId
+	let todoData = !todoCompleted;
+	$.ajax({
+		url: todoUrl,
+		method: 'PUT',
+		data: 'completed=' + todoData
+	})
+	.then(function(){
+		todo.toggleClass('completed');
+		todo.data('completed', todoData);
+	})
+	.catch(function(e){
+		console.log(e);
+	})
 }
 
 // Click on trash to delete to do items
