@@ -65,6 +65,7 @@ function updateTodo(todo){
 			data: "completed=true",
 		})
 		.then(todo.addClass('completed'))
+		.then(todo.data('completed', true))
 		.catch(function(e){
 			console.log(e);
 		})
@@ -75,6 +76,7 @@ function updateTodo(todo){
 			data: "completed=false",
 		})
 		.then(todo.removeClass('completed'))
+		.then(todo.data('completed', false))
 		.catch(function(e){
 			console.log(e);
 		})
