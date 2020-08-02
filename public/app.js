@@ -1,3 +1,20 @@
+// Get todo items on page load from api
+$(document).ready(function(){
+	$.getJSON("/api/todos")
+	.then(addTodos)
+	.catch(function(err){
+		res.send(err);
+	})
+})
+
+function addTodos(todos){
+	// add Todos to the page
+	todos.forEach(function(todo){
+		
+	})
+}
+
+
 // Check off to do items
 $("ul").on("click", "li", function(e) {
     $(this).toggleClass("completed");
