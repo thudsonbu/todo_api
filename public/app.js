@@ -24,6 +24,7 @@ function addTodos(todos){
 
 function addTodo(todo){
 	let newTodo = $("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todo.name + "</li>")
+	newTodo.data('id', todo._id);
 	if (todo.completed === true){
 		newTodo.addClass("completed");
 	}
@@ -37,6 +38,8 @@ function createTodo(text){
 	$.post('api/todos', { name: userInput })
 	.then(function(newTodo){
 		addTodo(newTodo);
+		// clear input text
+		$('#todo-input').val('');
 	})
 	.catch(function(err){
 		console.log(err);
@@ -57,6 +60,13 @@ $("ul").on("click", "span",function(e) {
         // removes parent element (li)
         $(this).remove();
     });
+	// remove item from database
+	let todoId = $(this).parent().data('id');
+	console.log(todoId);
+	$.ajax({
+		method: 'DELETE',
+		url: '/api/todos/' + todoId
+	})
     e.stopPropagation();
 });
 
