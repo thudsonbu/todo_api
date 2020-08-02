@@ -5,14 +5,42 @@ $(document).ready(function(){
 	.catch(function(err){
 		res.send(err);
 	})
+	
+	// event listener for form input
+	$('#todo-input').keypress(function(e){
+		if(e.which === 13){ // this checks which key was pressed (13 is the enter key)
+			// create a todo
+			createTodo();
+		}
+	})
 })
 
 function addTodos(todos){
 	// add Todos to the page
 	todos.forEach(function(todo){
-		let newTodo = $("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todo.name + "</li>")
-		$('.list').append(newTodo);
+		addTodo(todo);
 	});
+}
+
+function addTodo(todo){
+	let newTodo = $("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todo.name + "</li>")
+	if (todo.completed === true){
+		newTodo.addClass("completed");
+	}
+	$('.list').append(newTodo);
+}
+
+function createTodo(text){
+	// get text from input field
+	let userInput = $('#todo-input').val();
+	// send request to create a new todo
+	$.post('api/todos', { name: userInput })
+	.then(function(newTodo){
+		addTodo(newTodo);
+	})
+	.catch(function(err){
+		console.log(err);
+	})
 }
 
 
@@ -32,15 +60,15 @@ $("ul").on("click", "span",function(e) {
     e.stopPropagation();
 });
 
-// Creating new to do items
-$("input[id='bigInput']").keypress(function(e) {
-    if(e.which === 13){
-        let todoText = $(this).val();
-        // Clear input
-        $(this).val("");
-        $("ul[id='bigUl']").append("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todoText + "</li>");
-    }
-});
+// // Creating new to do items
+// $("input[id='bigInput']").keypress(function(e) {
+//     if(e.which === 13){
+//         let todoText = $(this).val();
+//         // Clear input
+//         $(this).val("");
+//         $("ul[id='bigUl']").append("<li class='m-0 p-0'><span><i class='fa fa-trash trashIcon'></i></span> " + todoText + "</li>");
+//     }
+// });
 
 // Fade in and out input
 $(".fa-plus").click(function(){
